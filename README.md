@@ -1,2 +1,2 @@
-# com.neptuo.money.app
+# Neptuo Money
 Static frontend for web-based Money app
