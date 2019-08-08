@@ -1,4 +1,5 @@
 ﻿$bodyMinWidth: 380px;
+$actionButtonColor: #333;
 
 .clear {
     clear: both;
@@ -10,8 +11,16 @@ body {
     padding-bottom: 20px;
 }
 
+.body-content {
+    margin-top: 20px;
+}
+
 h4 {
     margin-bottom: 20px;
+}
+
+.fas.fa-trash-alt {
+    color: #D85A5A;
 }
 
 .navbar {
@@ -76,6 +85,8 @@ h4 {
     width: 100%;
     min-width: $bodyMinWidth;
     left: 0;
+    top: 56px;
+    padding: 14px 0 4px 0;
     background: #f5f5f5;
     border-bottom: 1px solid #dddddd;
 
@@ -93,7 +104,7 @@ h4 {
             right: 0;
         }
     }*/
-    h2 {
+    h3 {
         span.text {
             position: relative;
             top: 3px;
@@ -109,7 +120,7 @@ h4 {
         }
     }
 
-    h4 {
+    h6 {
         width: 100%;
         margin-bottom: 20px;
         text-overflow: ellipsis;
@@ -119,7 +130,7 @@ h4 {
 }
 
 .header-append {
-    margin-bottom: 130px;
+    margin-bottom: 150px;
 }
 
 .center {
@@ -130,32 +141,36 @@ h4 {
     opacity: 0.7;
 }
 
-.alert .navbar-nav {
-    margin-top: -15px;
-
-    .btn-link {
-        color: #333;
-    }
+.navbar-right {
+    float: right;
 }
 
 @media (max-width: 768px) {
-    .alert .navbar-right {
-        margin: 0 -10px;
+    .navbar-collapse .navbar-right {
+        float: none;
     }
 }
 
-.btn-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 1.6em;
-    padding: 0;
-    margin: 4px;
+.alert {
+    .nav {
+        margin-top: -7px;
+        margin-bottom: -7px;
+
+        .btn-link {
+            color: $actionButtonColor;
+        }
+    }
 }
 
-.btn-color {
+.btn-icon, .btn-color {
     width: 48px;
     height: 48px;
-    margin: 4px;
+    margin: 3px;
+}
+
+.btn-icon {
+    font-size: 1.6em;
+    padding: 0;
 }
 
 .btn-selectable {
@@ -191,10 +206,16 @@ h4 {
     font-size: 11px;
 }
 
-.panel-body {
-    .navbar-nav {
-        margin-top: -15px;
-        margin-bottom: -15px;
+.card {
+    margin-bottom: 15px;
+
+    .nav {
+        margin-top: -7px;
+        margin-bottom: -7px;
+
+        .btn-link {
+            color: $actionButtonColor;
+        }
     }
 
     p:last-child {
@@ -210,8 +231,11 @@ h4 {
 
 
 .summary {
+    position: relative;
+
     .sort {
-        float: right;
+        position: absolute;
+        right: 0;
 
         .btn {
             border-color: transparent;
@@ -223,7 +247,7 @@ h4 {
     }
 
     .graph {
-        margin-bottom: -20px;
+        margin-bottom: -15px;
     }
 }
 
@@ -233,15 +257,18 @@ h4 {
     box-shadow: none;
     cursor: pointer;
 
-    .panel-body {
+    .card-body {
         position: relative;
         height: 60px;
+        padding: 15px;
     }
 
     .description {
         position: absolute;
         margin: 0;
+        font-size: 24px;
         font-weight: normal;
+        line-height: 1.1;
         display: inline;
         z-index: 1;
 
@@ -317,7 +344,7 @@ h4 {
     margin: 20px 0;
 }
 
-.card {
+.outcome-card {
     padding: 30px;
     border-bottom: 1px solid #eee;
 
@@ -335,6 +362,10 @@ h4 {
 
     .controls {
         float: right;
+
+        .btn-link {
+            color: $actionButtonColor;
+        }
     }
 
     .amount {
