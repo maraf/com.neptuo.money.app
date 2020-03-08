@@ -3,66 +3,34 @@ var isLoaded = false;
 
 window.Bootstrap = {
     Modal: {
-        Register: function (id) {
-            var target = $("#" + id);
-            target.on('shown.bs.modal', function (e) {
-                $(e.currentTarget).find('[data-autofocus]').select().focus();
+        Show: function (container) {
+            $(container).modal({
+                "show": true,
+                "focus": true
+            }).on('shown.bs.modal', function () {
+                $(container).find('[data-autofocus]').first().trigger('focus');
             });
-            target.on('hidden.bs.modal', function (e) {
-                DotNet.invokeMethodAsync("Money.UI.Blazor", "Bootstrap_ModalHidden", e.currentTarget.id);
-            });
-
-            return true;
         },
-        Toggle: function (id, isVisible) {
-            var target = $("#" + id);
-            target.modal(isVisible ? 'show' : 'hide');
-
-            return true;
+        Hide: function (container) {
+            $(container).modal('hide');
         }
     }
 };
 
-var connection = null;
-function StartSignalR(url, token) {
-    StopSignalR();
-
-    var connection = new signalR.HubConnectionBuilder()
-        .withUrl(url, { accessTokenFactory: function () { return token; } })
-        .build();
-
-    connection.on("RaiseEvent", function (e) {
-        console.log("JS: Event: " + e);
-
-        DotNet.invokeMethodAsync("Money.UI.Blazor", "RaiseEvent", e);
-    });
-
-    connection.on("RaiseException", function (e) {
-        console.log("JS: Exception: " + e);
-
-        DotNet.invokeMethodAsync("Money.UI.Blazor", "RaiseException", e);
-    });
-
-    connection.onclose(function () {
-        if (window.location.hostname != "localhost") {
-            alert('Underlaying connection to the server has closed. Reloading the page...');
+window.Network = {
+    Initialize: function (interop) {
+        function handler() {
+            interop.invokeMethodAsync("Network.StatusChanged", navigator.onLine);
         }
 
-        setTimeout(function () {
-            window.location.reload();
-        }, 2000);
-    });
-    connection.start().then(function () {
-        isStarted = true;
-    });
-}
+        window.addEventListener('online', handler);
+        window.addEventListener('offline', handler);
 
-function StopSignalR() {
-    if (connection != null) {
-        connection.stop();
-        connection = null;
+        if (!navigator.onLine) {
+            handler(navigator.onLine);
+        }
     }
-}
+};
 
 window.Money = {
     ApplicationStarted: function () {
@@ -72,8 +40,6 @@ window.Money = {
         window.location.href = href;
         return true;
     },
-    StartSignalR: StartSignalR,
-    StopSignalR: StopSignalR,
     SaveToken: function (token) {
         if ("localStorage" in window) {
             if (token == null)
