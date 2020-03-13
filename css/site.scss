@@ -6,22 +6,13 @@ $actionButtonColor: #333;
 }
 
 body {
-    position: relative;
     min-width: $bodyMinWidth;
-    min-height: 100vh;
     padding-top: 30px;
     padding-bottom: 20px;
 }
 
 .body-content {
     margin-top: 20px;
-    margin-bottom: 52px;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 h4 {
@@ -73,7 +64,7 @@ h4 {
     a.navbar-brand {
         padding-left: 50px;
         color: #fff;
-        background: url('../images/icon-w-40x40.png') no-repeat left center;
+        background: url('../images/logo.png') no-repeat left center;
 
         @media (max-width: 767px) {
             margin-left: 10px;
@@ -114,8 +105,6 @@ h4 {
         }
     }*/
     h3 {
-        line-height: 1.25;
-
         span.text {
             position: relative;
             top: 3px;
@@ -135,7 +124,6 @@ h4 {
         width: 100%;
         margin-bottom: 20px;
         text-overflow: ellipsis;
-        line-height: 1.25;
         white-space: nowrap;
         overflow: hidden;
     }
@@ -160,12 +148,6 @@ h4 {
 @media (max-width: 768px) {
     .navbar-collapse .navbar-right {
         float: none;
-    }
-}
-
-.table {
-    .btn-link {
-        padding: 0;
     }
 }
 
@@ -420,8 +402,8 @@ h4 {
         color: white;
 
         img {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
         }
 
         h1 {
@@ -527,10 +509,4 @@ h4 {
 
 .login {
     margin-top: 20px;
-}
-
-/* ------ EXPENSES BAG ------------------------------------------------------------------------- */
-
-.expenses-bag {
-    position: relative;
 }
