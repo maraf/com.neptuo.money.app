@@ -1,204 +1,48 @@
-const baseURL = '/';
-const indexURL = '/index.html';
-const networkFetchEvent = 'fetch';
-const swInstallEvent = 'install';
-const swInstalledEvent = 'installed';
-const swActivateEvent = 'activate';
-const staticCachePrefix = 'blazor-cache-v';
-const staticCacheName = 'blazor-cache-v1.10.0.2';
-const requiredFiles = [
-"/_framework/blazor.boot.json",
-"/_framework/blazor.webassembly.js",
-"/_framework/wasm/dotnet.js",
-"/_framework/wasm/dotnet.wasm",
-"/_framework/_bin/Microsoft.AspNetCore.Authorization.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Blazor.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Blazor.HttpClient.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Components.Authorization.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Components.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Components.Web.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Connections.Abstractions.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Http.Connections.Client.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Http.Connections.Common.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Http.Features.dll",
-"/_framework/_bin/Microsoft.AspNetCore.Metadata.dll",
-"/_framework/_bin/Microsoft.AspNetCore.SignalR.Client.Core.dll",
-"/_framework/_bin/Microsoft.AspNetCore.SignalR.Client.dll",
-"/_framework/_bin/Microsoft.AspNetCore.SignalR.Common.dll",
-"/_framework/_bin/Microsoft.AspNetCore.SignalR.Protocols.Json.dll",
-"/_framework/_bin/Microsoft.Bcl.AsyncInterfaces.dll",
-"/_framework/_bin/Microsoft.Extensions.Configuration.Abstractions.dll",
-"/_framework/_bin/Microsoft.Extensions.Configuration.dll",
-"/_framework/_bin/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-"/_framework/_bin/Microsoft.Extensions.DependencyInjection.dll",
-"/_framework/_bin/Microsoft.Extensions.Logging.Abstractions.dll",
-"/_framework/_bin/Microsoft.Extensions.Logging.dll",
-"/_framework/_bin/Microsoft.Extensions.Options.dll",
-"/_framework/_bin/Microsoft.Extensions.Primitives.dll",
-"/_framework/_bin/Microsoft.JSInterop.dll",
-"/_framework/_bin/Money.Api.Shared.dll",
-"/_framework/_bin/Money.Api.Shared.pdb",
-"/_framework/_bin/Money.dll",
-"/_framework/_bin/Money.Models.dll",
-"/_framework/_bin/Money.Models.pdb",
-"/_framework/_bin/Money.pdb",
-"/_framework/_bin/Money.UI.Blazor.dll",
-"/_framework/_bin/Money.UI.Blazor.pdb",
-"/_framework/_bin/Mono.Security.dll",
-"/_framework/_bin/Mono.WebAssembly.Interop.dll",
-"/_framework/_bin/mscorlib.dll",
-"/_framework/_bin/Neptuo.dll",
-"/_framework/_bin/Neptuo.pdb",
-"/_framework/_bin/System.Core.dll",
-"/_framework/_bin/System.Data.dll",
-"/_framework/_bin/System.dll",
-"/_framework/_bin/System.Drawing.Common.dll",
-"/_framework/_bin/System.IO.Pipelines.dll",
-"/_framework/_bin/System.Net.Http.dll",
-"/_framework/_bin/System.Runtime.CompilerServices.Unsafe.dll",
-"/_framework/_bin/System.Text.Encodings.Web.dll",
-"/_framework/_bin/System.Text.Json.dll",
-"/_framework/_bin/System.Threading.Channels.dll",
-"/_framework/_bin/WebAssembly.Bindings.dll",
-"/_framework/_bin/WebAssembly.Net.Http.dll",
-"/_framework/_bin/WebAssembly.Net.WebSockets.dll",
-"/css/site.min.css",
-"/favicon.ico",
-"/images/city.png",
-"/images/icon-w-192x192.png",
-"/images/icon-w-40x40.png",
-"/images/icon-w-512x512.png",
-"/images/icon-w-64x64.png",
-"/index.html",
-"/js/site.js",
-"/js/site.min.js",
-"/lib/bootstrap/dist/css/bootstrap-grid.css",
-"/lib/bootstrap/dist/css/bootstrap-grid.css.map",
-"/lib/bootstrap/dist/css/bootstrap-grid.min.css",
-"/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
-"/lib/bootstrap/dist/css/bootstrap-reboot.css",
-"/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
-"/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
-"/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
-"/lib/bootstrap/dist/css/bootstrap.css",
-"/lib/bootstrap/dist/css/bootstrap.css.map",
-"/lib/bootstrap/dist/css/bootstrap.min.css",
-"/lib/bootstrap/dist/css/bootstrap.min.css.map",
-"/lib/bootstrap/dist/js/bootstrap.bundle.js",
-"/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
-"/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
-"/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
-"/lib/bootstrap/dist/js/bootstrap.js",
-"/lib/bootstrap/dist/js/bootstrap.js.map",
-"/lib/bootstrap/dist/js/bootstrap.min.js",
-"/lib/bootstrap/dist/js/bootstrap.min.js.map",
-"/lib/bootstrap/dist/js/popper.min.js",
-"/lib/fontawesome/css/all.css",
-"/lib/fontawesome/css/all.min.css",
-"/lib/fontawesome/css/brands.css",
-"/lib/fontawesome/css/brands.min.css",
-"/lib/fontawesome/css/fontawesome.css",
-"/lib/fontawesome/css/fontawesome.min.css",
-"/lib/fontawesome/css/regular.css",
-"/lib/fontawesome/css/regular.min.css",
-"/lib/fontawesome/css/solid.css",
-"/lib/fontawesome/css/solid.min.css",
-"/lib/fontawesome/css/svg-with-js.css",
-"/lib/fontawesome/css/svg-with-js.min.css",
-"/lib/fontawesome/css/v4-shims.css",
-"/lib/fontawesome/css/v4-shims.min.css",
-"/lib/fontawesome/js/all.js",
-"/lib/fontawesome/js/all.min.js",
-"/lib/fontawesome/js/brands.js",
-"/lib/fontawesome/js/brands.min.js",
-"/lib/fontawesome/js/conflict-detection.js",
-"/lib/fontawesome/js/conflict-detection.min.js",
-"/lib/fontawesome/js/fontawesome.js",
-"/lib/fontawesome/js/fontawesome.min.js",
-"/lib/fontawesome/js/regular.js",
-"/lib/fontawesome/js/regular.min.js",
-"/lib/fontawesome/js/solid.js",
-"/lib/fontawesome/js/solid.min.js",
-"/lib/fontawesome/js/v4-shims.js",
-"/lib/fontawesome/js/v4-shims.min.js",
-"/lib/fontawesome/webfonts/fa-brands-400.eot",
-"/lib/fontawesome/webfonts/fa-brands-400.ttf",
-"/lib/fontawesome/webfonts/fa-brands-400.woff",
-"/lib/fontawesome/webfonts/fa-brands-400.woff2",
-"/lib/fontawesome/webfonts/fa-regular-400.eot",
-"/lib/fontawesome/webfonts/fa-regular-400.ttf",
-"/lib/fontawesome/webfonts/fa-regular-400.woff",
-"/lib/fontawesome/webfonts/fa-regular-400.woff2",
-"/lib/fontawesome/webfonts/fa-solid-900.eot",
-"/lib/fontawesome/webfonts/fa-solid-900.ttf",
-"/lib/fontawesome/webfonts/fa-solid-900.woff",
-"/lib/fontawesome/webfonts/fa-solid-900.woff2",
-"/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-"/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-"/lib/jquery-validation/dist/additional-methods.js",
-"/lib/jquery-validation/dist/additional-methods.min.js",
-"/lib/jquery-validation/dist/jquery.validate.js",
-"/lib/jquery-validation/dist/jquery.validate.min.js",
-"/lib/jquery/dist/jquery.js",
-"/lib/jquery/dist/jquery.min.js",
-"/lib/jquery/dist/jquery.min.map",
-"/lib/signalr/signalr.js",
-"/lib/signalr/signalr.js.map",
-"/lib/signalr/signalr.min.js",
-"/lib/signalr/signalr.min.js.map",
-"/service-worker-register.js",
-"/manifest.json"
-];
-// * listen for the install event and pre-cache anything in filesToCache * //
-self.addEventListener(swInstallEvent, event => {
-    self.skipWaiting();
-    event.waitUntil(
-        caches.open(staticCacheName)
-            .then(cache => {
-                return cache.addAll(requiredFiles);
-            })
-    );
-});
-self.addEventListener(swActivateEvent, function (event) {
-    event.waitUntil(
-        caches.keys().then(function (cacheNames) {
-            return Promise.all(
-                cacheNames.map(function (cacheName) {
-                    if (staticCacheName !== cacheName && cacheName.startsWith(staticCachePrefix)) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
-});
-self.addEventListener(networkFetchEvent, event => {
-    const requestUrl = new URL(event.request.url);
-    if (requestUrl.origin === location.origin) {
-        if (requestUrl.pathname === baseURL) {
-            event.respondWith(caches.match(indexURL));
-            return;
-        }
+// Caution! Be sure you understand the caveats before publishing an application with
+// offline support. See https://aka.ms/blazor-offline-considerations
+
+self.importScripts('./service-worker-assets.js');
+self.addEventListener('install', event => event.waitUntil(onInstall(event)));
+self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
+self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
+
+const cacheNamePrefix = 'offline-cache-';
+const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
+const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/ ];
+const offlineAssetsExclude = [ /^service-worker\.js$/ ];
+
+async function onInstall(event) {
+    console.info('Service worker: Install');
+
+    // Fetch and cache all matching items from the assets manifest
+    const assetsRequests = self.assetsManifest.assets
+        .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
+        .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
+        .map(asset => new Request(asset.url, { integrity: asset.hash }));
+    await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
+}
+
+async function onActivate(event) {
+    console.info('Service worker: Activate');
+
+    // Delete unused caches
+    const cacheKeys = await caches.keys();
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
+        .map(key => caches.delete(key)));
+}
+
+async function onFetch(event) {
+    let cachedResponse = null;
+    if (event.request.method === 'GET') {
+        // For all navigation requests, try to serve index.html from cache
+        // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
+        const shouldServeIndexHtml = event.request.mode === 'navigate';
+
+        const request = shouldServeIndexHtml ? 'index.html' : event.request;
+        const cache = await caches.open(cacheName);
+        cachedResponse = await cache.match(request);
     }
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request)
-                    .then(response => {
-                        if (response.ok) {
-                            if (requestUrl.origin === location.origin) {
-                                caches.open(staticCacheName).then(cache => {
-                                    cache.put(event.request.url, response);
-                                });
-                            }
-                        }
-                        return response.clone();
-                    });
-            }).catch(error => {
-                console.error(error);
-            })
-    );
-});
+
+    return cachedResponse || fetch(event.request);
+}
