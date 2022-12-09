@@ -11,7 +11,7 @@ $actionButtonColor: #333;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #007BFF;
+    background: #bbb;
 }
 
 .clear {
@@ -28,6 +28,7 @@ body {
     min-height: 100vh;
     padding-top: 30px;
     padding-bottom: 20px;
+    overflow-x: hidden;
 }
 
 .body-content {
@@ -68,6 +69,12 @@ h4 {
 
 .dropdown-item {
     padding: .25rem 1rem;
+
+    .fa, .fas {
+        width: 20px;
+        text-align: center;
+        margin-right: 6px;
+    }
 }
 
 .navbar-dark {
@@ -84,12 +91,28 @@ h4 {
 
     .navbar-collapse {
         border-color: #398BF5;
-        height: calc(100vh - 56px);
+        height: calc(100vh - 112px);
         visibility: visible;
         transition: height .4s;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        @media (min-width: 576px) {
+            height: calc(100vh - 56px);
+        }
 
         @media (min-width: 992px) {
             height: auto;
+            overflow-x: unset;
+            overflow-y: unset;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #004074;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #004074;
         }
     }
 
@@ -245,7 +268,7 @@ h4 {
     background: #f5f5f5;
     border-top: 1px solid #dddddd;
 
-    .items-4, .items-3 {
+    .items-6, .items-5, .items-4, .items-3 {
         span.text {
             display: none;
         }
@@ -353,6 +376,10 @@ h4 {
     p:last-child {
         margin: 0;
     }
+
+    &.card-hover:hover {
+        background-color: #eee;
+    }
 }
 
 .sort {
@@ -459,7 +486,6 @@ h4 {
 
     .sort {
         float: right;
-        margin-right: 35px;
     }
 }
 
@@ -493,6 +519,17 @@ h4 {
     }
 }
 
+.modal .modal-overflow .modal-body {
+    max-height: calc(100vh - 142px - 1rem);
+    overflow: auto;
+}
+
+@media (min-width: 576px) {
+    .modal .modal-overflow .modal-body {
+        max-height: calc(100vh - 142px - 2.5rem);
+    }
+}
+
 .vertical-bar {
     display: flex;
     align-items: flex-end;
@@ -503,6 +540,7 @@ h4 {
 }
 
 /* ------ SPLASH SCREEN ------------------------------------------------------------------------ */
+
 .splash {
     position: absolute;
     top: 0;
@@ -526,9 +564,9 @@ h4 {
     }
 
     img {
-        width: 120px;
-        height: 120px;
-        transition: margin-left 0.5s linear 0.5s, width 0.5s, height 0.5s;
+        width: 274px;
+        height: 274px;
+        transition: opacity 0.5s, width 0.5s, height 0.5s;
     }
 
     &.animate {
@@ -536,30 +574,13 @@ h4 {
         opacity: 0;
         margin-top: -60px;
 
-        .app-title {
+        .app-title, img {
             opacity: 0;
         }
 
         img {
-            width: 40px;
-            height: 40px;
-            margin-left: calc(-100vw + 71px);
-
-            @media (min-width: 576px) {
-                margin-left: -480px;
-            }
-
-            @media (min-width: 768px) {
-                margin-left: -680px;
-            }
-
-            @media (min-width: 992px) {
-                margin-left: -890px;
-            }
-
-            @media (min-width: 1200px) {
-                margin-left: -1070px;
-            }
+            width: 56px;
+            height: 56px;
         }
     }
 }
@@ -738,4 +759,21 @@ h4 {
     40% {
         transform: scale(1);
     }
+}
+
+/* ------ SWIPING ------------------------------------------------------------------------------ */
+
+.swipe-left, .swipe-right {
+    position: fixed;
+    top: calc(100vh / 2 - 60px);
+    font-size: 2.5rem;
+    color: $backgroundColor;
+}
+
+.swipe-left {
+    left: -35px;
+}
+
+.swipe-right {
+    right: -35px;
 }
